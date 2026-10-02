@@ -12,7 +12,7 @@ services:
       - key: PORT
         value: 10000
       - key: FRONTEND_URL
-        value: https://your-vercel-url.vercel.app
+        value: https://himanshi-ecom-frontend.vercel.app
       - key: DATABASE_URL
         sync: false
       - key: JWT_SECRET
