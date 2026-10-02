@@ -1,43 +1,174 @@
-# FORME — JavaScript e-commerce design
+# Pranita E-Commerce
 
-A responsive design milestone for the provided Full Stack Internship assessment. Plain HTML, CSS and JavaScript; no build step or dependency installation. The frontend can be hosted separately on Vercel or Netlify.
+Full-stack e-commerce project built for the Full Stack Intern Technical Assessment.
 
-## Run locally
+## Live Links
 
-From `frontend`, start any static server, for example `python -m http.server 5173`, then open http://localhost:5173. You can also open index.html directly for a quick preview.
+- Frontend: https://himanshi-ecom-frontend.vercel.app/
+- Backend: https://himanshi-ecom.onrender.com
+- GitHub Repository: https://github.com/pranitachakorlad/himanshi-ecom
 
-## Implemented
+## Demo Login Credentials
 
-- Responsive storefront, category/search/price filters, sorting and empty states.
-- Wishlist, cart quantities, removal and totals persisted in browser localStorage.
-- User, Sales Person and Admin dashboard previews through the account button.
-- Local product creation/edit/delete preview, seller-specific product views.
-- Direct Cloudinary Upload Widget integration: selected files upload to Cloudinary, only returned HTTPS Cloudinary image URLs are saved.
-- Vercel and Netlify static deployment configuration; separate frontend/backend structure and environment example.
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | admin@pranita.local | Admin12345 |
+| Sales Person | sales.demo@pranita.local | Sales12345 |
+| User | user@pranita.local | User12345 |
 
-## Cloudinary setup
+## Role Access
 
-Edit `frontend/config.js` with your cloud name and a restricted unsigned image upload preset. The widget accepts one local JPG/PNG/WebP image up to 5 MB. Configure size/type restrictions in Cloudinary too; browser checks alone do not enforce them. No Cloudinary API secret belongs in the frontend.
+### User
 
-The initial images are assets delivered from Cloudinary's public demo cloud, not uploads into your own account. They are temporary layout samples. Upload your own matching product images before submission. Unsigned upload is for this prototype; for the assessed app add a backend signature endpoint and use signed uploads.
+- Browse products
+- Search and filter products
+- Add products to wishlist
+- Add products to bag
+- Buy products using Razorpay test checkout
+- View order history
 
-Documentation: https://cloudinary.com/documentation/upload_widget
+### Sales Person
 
-## Deploy design on Vercel (assessment target)
+- Login from the same login form
+- Add product with Cloudinary image upload
+- Manage only their own products
+- View orders related to their products
 
-Push the project to a GitHub repository. Import it in Vercel, set Root Directory to `frontend`, choose framework `Other`, disable/leave empty the build command, and use the root (`.`) as output directory. Deploy the static files. No private environment variables are required for this design.
+### Admin
 
-For Netlify, select `frontend` as the base directory, leave the build command empty and use `.` as the publish directory. This is an alternative for preview; the assessment explicitly requests Vercel.
+- Login from the same login form
+- Create sales person accounts
+- View users and sales persons
+- Manage all seller products
+- View all orders
 
-## What is still required for the full assessment
+## Payment Testing
 
-This is a design prototype, not the complete assessed full-stack platform. No real login, password hashing, server permission enforcement, database, order history, sales stats or Razorpay payments are implemented. Role previews and localStorage are not secure or shared between users. Cart contents are preserved at the checkout boundary.
+Use Razorpay test mode.
 
-1. Implement the JavaScript backend and database described in `backend/README.md`.
-2. Connect frontend API calls, real authentication, signed Cloudinary uploads and protected dashboards.
-3. Add Razorpay test order creation and server signature verification; record verified orders and clear cart.
-4. Commit milestones going forward, make a feature branch and merge a real PR. Existing milestone history is not fabricated.
-5. Deploy backend on Render and frontend on Vercel, configure backend secrets and CORS, then test every role and checkout end to end.
-6. Add actual test account credentials, 2–3 screenshots, repository link and deployment links to the final README.
+| Field | Value |
+| --- | --- |
+| Card Number | 4718 6091 0820 4366 |
+| Expiry | Any future date, for example 12/30 |
+| CVV | Any 3 digits, for example 123 |
+| OTP | 1234 |
 
-No accounts were created, external uploads made, payments processed or hosting published during this design milestone.
+## Tech Stack
+
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js, Express.js
+- Database: MongoDB Atlas
+- Authentication: JWT and bcrypt password hashing
+- Image Upload: Cloudinary signed upload
+- Payment Gateway: Razorpay test integration
+- Frontend Deployment: Vercel
+- Backend Deployment: Render
+
+## Main Features
+
+- Dark themed responsive shopping UI
+- Product listing with search, category filter, price filter and sorting
+- Wishlist and bag/cart
+- Role based login system
+- User, Admin and Sales Person panels
+- Sales person product ownership rules
+- Admin can manage users, sales persons, products and orders
+- Cloudinary product image upload
+- Razorpay test payment flow
+- MongoDB backed products, users, wishlist, cart and orders
+
+## Local Setup
+
+### Backend
+
+```bash
+cd backend
+pnpm install
+pnpm start
+```
+
+Backend runs on:
+
+```text
+http://localhost:5000
+```
+
+### Frontend
+
+```bash
+cd frontend
+python -m http.server 5173
+```
+
+Frontend runs on:
+
+```text
+http://localhost:5173
+```
+
+For local testing, update `frontend/config.js`:
+
+```js
+apiBaseUrl: 'http://localhost:5000'
+```
+
+For deployed testing, it is set to:
+
+```js
+apiBaseUrl: 'https://himanshi-ecom.onrender.com'
+```
+
+## Environment Variables
+
+Backend environment variables are configured on Render.
+
+Required keys:
+
+```env
+DATABASE_URL=
+JWT_SECRET=
+FRONTEND_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+```
+
+Note: Secret values are not committed to GitHub.
+
+## Deployment
+
+### Backend
+
+Hosted on Render.
+
+- Root Directory: `backend`
+- Build Command: `pnpm install --frozen-lockfile`
+- Start Command: `pnpm start`
+
+### Frontend
+
+Hosted on Vercel.
+
+- Root Directory: `frontend`
+- Framework: Other
+- Build Command: empty
+- Output Directory: `.`
+
+## Testing Flow
+
+1. Open the frontend live link.
+2. Login as Sales Person.
+3. Add a product with image upload.
+4. Logout and login as User.
+5. Add product to wishlist.
+6. Add product to bag.
+7. Click Buy Now and complete Razorpay test payment.
+8. Login as Admin and verify users, sales persons, products and orders.
+
+## Notes
+
+- Render free backend may sleep after inactivity, so the first request can take 30-60 seconds.
+- The project uses test credentials and Razorpay test mode only.
+- Product images are uploaded through Cloudinary from the Sales Person or Admin product form.
