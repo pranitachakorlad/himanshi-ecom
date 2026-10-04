@@ -5,6 +5,7 @@ import { requireAuth, requireRole } from '../middleware/auth.js';
 import { User } from '../models/User.js';
 
 const router = express.Router();
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function publicUser(user) {
   return {
@@ -28,6 +29,10 @@ router.post('/sales', requireAuth, requireRole('admin'), async (req, res) => {
 
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'Name, email and password are required' });
+  }
+
+  if (!emailPattern.test(email)) {
+    return res.status(400).json({ message: 'Enter a valid email address like pranita12@gmail.com' });
   }
 
   if (password.length < 8) {

@@ -5,6 +5,7 @@ import { User } from '../models/User.js';
 import { signToken } from '../utils/token.js';
 
 const router = express.Router();
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function publicUser(user) {
   return {
@@ -23,6 +24,10 @@ router.post('/register', async (req, res) => {
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email and password are required' });
+    }
+
+    if (!emailPattern.test(email)) {
+      return res.status(400).json({ message: 'Enter a valid email address like pranita12@gmail.com' });
     }
 
     if (password.length < 8) {
@@ -58,6 +63,10 @@ router.post('/login', async (req, res) => {
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    if (!emailPattern.test(email)) {
+      return res.status(400).json({ message: 'Enter a valid email address like pranita12@gmail.com' });
     }
 
     const user = await User.findOne({ email });
