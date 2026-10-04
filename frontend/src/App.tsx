@@ -551,7 +551,7 @@ function StoreProvider({ children }: { children: ReactNode }) {
         key: data.razorpay.keyId,
         amount: data.razorpay.amount,
         currency: data.razorpay.currency,
-        name: "Lunara Jewels",
+        name: "Pranita Jewels",
         description: "Jewellery order payment",
         order_id: data.razorpay.orderId,
         prefill: { name: session.user.name, email: session.user.email },
@@ -615,7 +615,7 @@ function Loader({ onDone }: { onDone: () => void }) {
         <Gem size={58} />
       </div>
       <motion.p initial={{ opacity: 0, filter: "blur(10px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ delay: 0.9 }}>
-        Lunara Jewels
+        Pranita Jewels
       </motion.p>
     </motion.div>
   );
@@ -639,9 +639,9 @@ function Layout({ route, navigate, children }: { route: Route; navigate: (page: 
       <SoftCursor />
       <header className={`nav ${scrolled ? "nav-glass" : ""}`}>
         <button className="nav-menu" onClick={() => setMobile(true)} aria-label="Open menu"><Menu /></button>
-        <button className="brand" onClick={() => navigate("home")} aria-label="Lunara home">
-          <span className="brand-mark">L</span>
-          <span><strong>Lunara</strong><small>JEWELS</small></span>
+        <button className="brand" onClick={() => navigate("home")} aria-label="Pranita home">
+          <span className="brand-mark">P</span>
+          <span><strong>Pranita</strong><small>JEWELS</small></span>
         </button>
         <nav className="nav-links" aria-label="Main navigation">
           {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gifts"].map((label) => (
@@ -874,7 +874,7 @@ function Hero({ navigate }: { navigate: (page: Page, productId?: string | number
         loop
         playsInline
         preload="metadata"
-        aria-label="Lunara Jewels cinematic jewellery campaign video"
+        aria-label="Pranita Jewels cinematic jewellery campaign video"
       />
       <ParticleField />
       <button className="skip" onClick={() => setSkipped(true)}>Skip animation</button>
@@ -1362,7 +1362,7 @@ function InstagramGallery() {
   const { allProducts } = useStore();
   return (
     <section className="section insta">
-      <SectionHead eyebrow="@lunarajewels" title="Seen in candlelight" />
+      <SectionHead eyebrow="@pranitajewels" title="Seen in candlelight" />
       {allProducts.slice(0, 6).map((product) => <img key={product.id} src={product.image} alt={product.name} loading="lazy" />)}
     </section>
   );
@@ -1397,7 +1397,7 @@ function Spec({ icon, label, value }: { icon: ReactNode; label: string; value: s
 function Footer({ navigate }: { navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
   return (
     <footer>
-      <div><h2>Lunara Jewels</h2><p>A fictional luxury jewellery universe for modern romance, crafted with original product concepts and cinematic interaction design.</p></div>
+      <div><h2>Pranita Jewels</h2><p>A luxury jewellery universe for modern romance, crafted with premium product concepts and cinematic interaction design.</p></div>
       <div>{categories.slice(0, 4).map((category) => <button key={category} onClick={() => navigate("listing", undefined, category)}>{category}</button>)}</div>
       <div><span>Certified stones</span><span>Secure checkout</span><span>Lifetime care</span><span>Insured delivery</span></div>
     </footer>
