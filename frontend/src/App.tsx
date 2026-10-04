@@ -660,7 +660,7 @@ function Layout({ route, navigate, children }: { route: Route; navigate: (page: 
           <Search size={17} />
           <input value={search} onFocus={() => route.page !== "listing" && navigate("listing")} onChange={(event) => setSearch(event.target.value)} placeholder="Search rings, diamonds, gifts" />
         </label>
-        <button className="icon-pill" onClick={() => setAccountOpen(true)} aria-label="Account"><User size={19} />{session && <b>{session.user.role[0].toUpperCase()}</b>}</button>
+        <button className="icon-pill account-pill" onClick={() => setAccountOpen(true)} aria-label="Account"><User size={21} /></button>
         <button className="icon-pill count" onClick={() => navigate("wishlist")} aria-label="Wishlist"><Heart size={19} />{wishlistCount > 0 && <b>{wishlistCount}</b>}</button>
         <button id="cart-target" className="icon-pill count" onClick={() => navigate("cart")} aria-label="Cart"><ShoppingBag size={19} />{cartCount > 0 && <b>{cartCount}</b>}</button>
       </header>
@@ -1099,10 +1099,10 @@ function PopupImageLoop() {
 }
 
 function GiftFeatureCards({ navigate }: { navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
-  const cards: { title: Category; image: string; copy: string }[] = [
-    { title: "Gift for Her", image: "/campaign/gift-for-her.png", copy: "Velvet sets, diamonds, and golden glow for her." },
-    { title: "Gift Boxes", image: "/campaign/gift-boxes.png", copy: "Premium emerald velvet boxes for complete gifting." },
-    { title: "Gift for Him", image: "/campaign/gift-for-him.png", copy: "Bold gold chains, bracelets, and rings for him." },
+  const cards: { title: Category; image: string }[] = [
+    { title: "Gift for Her", image: "/campaign/gift-for-her.png" },
+    { title: "Gift Boxes", image: "/campaign/gift-boxes.png" },
+    { title: "Gift for Him", image: "/campaign/gift-for-him.png" },
   ];
 
   return (
@@ -1110,8 +1110,6 @@ function GiftFeatureCards({ navigate }: { navigate: (page: Page, productId?: str
       {cards.map((card) => (
         <button key={card.title} className="gift-feature-card" onClick={() => navigate("listing", undefined, card.title)}>
           <img src={card.image} alt={card.title} loading="lazy" />
-          <span>{card.title}</span>
-          <p>{card.copy}</p>
         </button>
       ))}
     </section>
@@ -1153,8 +1151,8 @@ function ProductCard({ product, navigate }: { product: Product; navigate: (page:
       </div>
       <div className="card-actions">
         <button className="btn-ghost" onClick={() => navigate("product", product.id)}>Details</button>
-        <button className="btn-gold small" onClick={() => addToCart(product)}>Add to Bag</button>
-        <button className="btn-buy small" onClick={async () => { await addToCart(product); buyNow({ ...product, quantity: 1 }); navigate("checkout"); }}>Buy Now</button>
+        <button className="btn-gold small" onClick={() => addToCart(product)}>Bag</button>
+        <button className="btn-buy small" onClick={async () => { await addToCart(product); buyNow({ ...product, quantity: 1 }); navigate("checkout"); }}>Buy</button>
       </div>
     </motion.article>
   );
