@@ -384,19 +384,6 @@ h3,
     linear-gradient(180deg, rgba(2, 3, 10, 0.1), rgba(5, 6, 13, 0.62) 88%);
 }
 
-.skip {
-  position: absolute;
-  right: clamp(1rem, 3vw, 2.5rem);
-  bottom: 1.2rem;
-  z-index: 5;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  color: rgba(251, 253, 255, 0.74);
-  padding: 0.58rem 0.9rem;
-  font-size: 0.82rem;
-}
-
 .hero-copy {
   position: relative;
   z-index: 2;
@@ -1702,8 +1689,7 @@ footer span {
     transition-duration: 0.001ms !important;
   }
 
-  .soft-cursor,
-  .skip {
+  .soft-cursor {
     display: none;
   }
 }

@@ -873,9 +873,8 @@ function OrderList({ orders }: { orders: OrderRecord[] }) {
 }
 
 function Hero({ navigate }: { navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
-  const [skipped, setSkipped] = useState(false);
   return (
-    <section className={`hero ${skipped ? "hero-skip" : ""}`}>
+    <section className="hero">
       <video
         className="hero-video"
         src="/campaign/hero-video.mp4"
@@ -887,8 +886,7 @@ function Hero({ navigate }: { navigate: (page: Page, productId?: string | number
         aria-label="Pranita Jewels cinematic jewellery campaign video"
       />
       <ParticleField />
-      <button className="skip" onClick={() => setSkipped(true)}>Skip animation</button>
-      <motion.div className="hero-copy" initial={{ opacity: 0, y: 34, filter: "blur(14px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.1, delay: skipped ? 0 : 4.4 }}>
+      <motion.div className="hero-copy" initial={{ opacity: 0, y: 34, filter: "blur(14px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.1, delay: 4.4 }}>
         <p className="eyebrow">Private celestial collection</p>
         <h1>Where Desire Becomes Jewellery</h1>
         <p>Discover luminous pieces crafted for the moments you never want to fade.</p>
