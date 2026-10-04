@@ -356,32 +356,26 @@ h3,
 .hero {
   position: relative;
   display: grid;
-  min-height: 100svh;
-  place-items: center;
+  gap: clamp(1rem, 2vw, 1.7rem);
+  min-height: auto;
   overflow: hidden;
-  padding: 7rem 1rem 3rem;
-  isolation: isolate;
+  padding: 5.8rem 0 clamp(1.5rem, 3vw, 2.8rem);
+}
+
+.hero-video-frame {
+  width: 100%;
+  height: clamp(30rem, 78svh, 56rem);
+  overflow: hidden;
+  background: #05060d;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.34);
 }
 
 .hero-video {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.92;
-  filter: saturate(1.02) contrast(1.04) brightness(0.88);
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(90deg, rgba(2, 3, 10, 0.72), rgba(2, 3, 10, 0.18) 46%, rgba(5, 6, 13, 0.55)),
-    linear-gradient(180deg, rgba(2, 3, 10, 0.1), rgba(5, 6, 13, 0.62) 88%);
+  opacity: 1;
 }
 
 .hero-copy {
@@ -411,10 +405,11 @@ h3,
 
 .hero-actions {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0.85rem;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .particles {
@@ -1626,7 +1621,12 @@ footer span {
   }
 
   .hero {
-    min-height: 92svh;
+    min-height: auto;
+    padding-top: 5.4rem;
+  }
+
+  .hero-video-frame {
+    height: clamp(24rem, 68svh, 40rem);
   }
 
   .hero-cluster {
