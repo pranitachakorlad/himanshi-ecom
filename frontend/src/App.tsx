@@ -23,7 +23,7 @@ import type { ReactNode } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 type Page = "home" | "listing" | "product" | "cart" | "wishlist" | "checkout";
-type Category = "New Arrivals" | "Rings" | "Necklaces" | "Earrings" | "Bridal" | "Gift Boxes";
+type Category = "New Arrivals" | "Rings" | "Necklaces" | "Earrings" | "Bracelet" | "Bridal" | "Gift Boxes" | "Gift for Him" | "Gift for Her";
 type Metal = "Champagne Gold" | "Platinum" | "Rose Gold" | "White Gold";
 type Role = "user" | "sales" | "admin";
 
@@ -129,7 +129,9 @@ interface ProductPayload {
   imageUrl: string;
 }
 
-const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gift Boxes"];
+const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"];
+const giftCategories: Category[] = ["Gift for Him", "Gift for Her"];
+const filterCategories: (Category | "All")[] = ["All", ...categories, ...giftCategories];
 
 const products: Product[] = [
   {
@@ -644,8 +646,8 @@ function Layout({ route, navigate, children }: { route: Route; navigate: (page: 
           <span><strong>Pranita</strong><small>JEWELS</small></span>
         </button>
         <nav className="nav-links" aria-label="Main navigation">
-          {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gift Boxes"].map((label) => (
-            <button key={label} className="nav-link" onClick={() => navigate("listing", undefined, label === "New Arrivals" ? "All" : label as Category)}>
+          {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"].map((label) => (
+            <button key={label} className="nav-link" onClick={() => navigate("listing", undefined, label as Category)}>
               {label}
               <span className="mega">
                 <img src={allProducts[label === "Rings" ? 0 : label === "Necklaces" ? 1 : label === "Earrings" ? 2 : 4]?.image || products[0].image} alt="" />
@@ -701,7 +703,7 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
   const [mode, setMode] = useState<"login" | "register">("login");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [salesForm, setSalesForm] = useState({ name: "", email: "", password: "" });
-  const [productForm, setProductForm] = useState({ name: "", category: "Rings", price: "", imageUrl: "" });
+  const [productForm, setProductForm] = useState({ name: "", category: "Rings", giftFor: "", price: "", imageUrl: "" });
   const [busy, setBusy] = useState(false);
 
   if (!open) return null;
@@ -750,8 +752,9 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
     event.preventDefault();
     setBusy(true);
     try {
-      await saveProduct({ ...productForm, price: Number(productForm.price) });
-      setProductForm({ name: "", category: "Rings", price: "", imageUrl: "" });
+      const category = productForm.category === "Gift Boxes" && productForm.giftFor ? productForm.giftFor : productForm.category;
+      await saveProduct({ name: productForm.name, category, price: Number(productForm.price), imageUrl: productForm.imageUrl });
+      setProductForm({ name: "", category: "Rings", giftFor: "", price: "", imageUrl: "" });
     } catch (error) {
       alert(error instanceof Error ? error.message : "Could not save product");
     } finally {
@@ -831,8 +834,8 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
 }
 
 function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
-  form: { name: string; category: string; price: string; imageUrl: string };
-  setForm: (value: { name: string; category: string; price: string; imageUrl: string }) => void;
+  form: { name: string; category: string; giftFor: string; price: string; imageUrl: string };
+  setForm: (value: { name: string; category: string; giftFor: string; price: string; imageUrl: string }) => void;
   busy: boolean;
   onFile: (file?: File) => void;
   onSubmit: (event: React.FormEvent) => void;
@@ -842,6 +845,13 @@ function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
       <h3>Add Jewellery Product</h3>
       <input placeholder="Product name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
       <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
+      {form.category === "Gift Boxes" && (
+        <select value={form.giftFor} onChange={(e) => setForm({ ...form, giftFor: e.target.value })}>
+          <option value="">Gift Boxes</option>
+          <option value="Gift for Him">Gift for Him</option>
+          <option value="Gift for Her">Gift for Her</option>
+        </select>
+      )}
       <input type="number" min={1} placeholder="Price" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required />
       <input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => onFile(e.target.files?.[0])} />
       {form.imageUrl && <img className="upload-preview" src={form.imageUrl} alt="Uploaded product" />}
@@ -931,6 +941,7 @@ function Home({ navigate }: { navigate: (page: Page, productId?: string | number
         {["Conflict-free diamonds", "Insured delivery", "Lifetime polishing", "Certified metals", "Private styling"].map((item) => <span key={item}>{item}</span>)}
       </section>
       <ProductRail title="Trending Jewellery" subtitle="Rare pieces catching the season's light" items={allProducts.slice(0, 5)} navigate={navigate} />
+      <GiftFeatureCards navigate={navigate} />
       <TryOnSection navigate={navigate} />
       <section ref={storyRef} className="story">
         <div className="story-copy">
@@ -1087,6 +1098,26 @@ function PopupImageLoop() {
   );
 }
 
+function GiftFeatureCards({ navigate }: { navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
+  const cards: { title: Category; image: string; copy: string }[] = [
+    { title: "Gift for Her", image: "/campaign/gift-for-her.png", copy: "Velvet sets, diamonds, and golden glow for her." },
+    { title: "Gift Boxes", image: "/campaign/gift-boxes.png", copy: "Premium emerald velvet boxes for complete gifting." },
+    { title: "Gift for Him", image: "/campaign/gift-for-him.png", copy: "Bold gold chains, bracelets, and rings for him." },
+  ];
+
+  return (
+    <section className="section gift-feature-grid">
+      {cards.map((card) => (
+        <button key={card.title} className="gift-feature-card" onClick={() => navigate("listing", undefined, card.title)}>
+          <img src={card.image} alt={card.title} loading="lazy" />
+          <span>{card.title}</span>
+          <p>{card.copy}</p>
+        </button>
+      ))}
+    </section>
+  );
+}
+
 function ProductRail({ title, subtitle, items, navigate }: { title: string; subtitle: string; items: Product[]; navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
   return (
     <section className="section">
@@ -1099,7 +1130,7 @@ function ProductRail({ title, subtitle, items, navigate }: { title: string; subt
 }
 
 function ProductCard({ product, navigate }: { product: Product; navigate: (page: Page, productId?: string | number, category?: Category | "All") => void }) {
-  const { addToCart, toggleWishlist, wishlistIds } = useStore();
+  const { addToCart, buyNow, toggleWishlist, wishlistIds } = useStore();
   const saved = wishlistIds.has(product.id);
   return (
     <motion.article className="product-card" initial={{ opacity: 0, y: 28, filter: "blur(12px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true, margin: "-80px" }}>
@@ -1123,6 +1154,7 @@ function ProductCard({ product, navigate }: { product: Product; navigate: (page:
       <div className="card-actions">
         <button className="btn-ghost" onClick={() => navigate("product", product.id)}>Details</button>
         <button className="btn-gold small" onClick={() => addToCart(product)}>Add to Bag</button>
+        <button className="btn-buy small" onClick={async () => { await addToCart(product); buyNow({ ...product, quantity: 1 }); navigate("checkout"); }}>Buy Now</button>
       </div>
     </motion.article>
   );
@@ -1189,7 +1221,10 @@ function Listing({ route, navigate }: { route: Route; navigate: (page: Page, pro
   const visible = useMemo(() => {
     const query = search.toLowerCase().trim();
     return allProducts
-      .filter((product) => (category === "All" || product.category === category) && (metal === "All" || product.metal === metal) && product.price <= price)
+      .filter((product) => {
+        const giftBoxMatch = category === "Gift Boxes" && ["Gift Boxes", "Gift for Him", "Gift for Her"].includes(String(product.category));
+        return (category === "All" || product.category === category || giftBoxMatch) && (metal === "All" || product.metal === metal) && product.price <= price;
+      })
       .filter((product) => !query || `${product.name} ${product.category} ${product.metal}`.toLowerCase().includes(query))
       .sort((a, b) => sort === "low" ? a.price - b.price : sort === "high" ? b.price - a.price : sort === "new" ? +new Date(b.createdAt) - +new Date(a.createdAt) : b.popularity - a.popularity);
   }, [allProducts, category, metal, price, search, sort]);
@@ -1200,7 +1235,7 @@ function Listing({ route, navigate }: { route: Route; navigate: (page: Page, pro
       <div className="listing">
         <aside className="filters">
           <h2><SlidersHorizontal size={19} /> Filters</h2>
-          <Select label="Category" value={category} onChange={(value) => setCategory(value as Category | "All")} options={["All", ...categories]} />
+          <Select label="Category" value={category} onChange={(value) => setCategory(value as Category | "All")} options={filterCategories} />
           <Select label="Metal" value={metal} onChange={(value) => setMetal(value as Metal | "All")} options={["All", "Champagne Gold", "Platinum", "Rose Gold", "White Gold"]} />
           <label className="field">Price up to {money(price)}<input type="range" min={45000} max={340000} step={5000} value={price} onChange={(event) => setPrice(Number(event.target.value))} /></label>
           <Select label="Sort" value={sort} onChange={setSort} options={["popular", "new", "low", "high"]} labels={["Most desired", "Newest", "Price low", "Price high"]} />
