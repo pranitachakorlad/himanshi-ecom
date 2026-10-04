@@ -129,9 +129,10 @@ interface ProductPayload {
   imageUrl: string;
 }
 
-const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes", "Gift for Him", "Gift for Her"];
-const navCategories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"];
-const filterCategories: (Category | "All")[] = ["All", ...categories];
+const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal"];
+const giftCategories: Category[] = ["Gift Boxes", "Gift for Him", "Gift for Her"];
+const navCategories: Category[] = [...categories, "Gift Boxes"];
+const filterCategories: (Category | "All")[] = ["All", ...categories, ...giftCategories];
 
 const products: Product[] = [
   {
@@ -703,7 +704,7 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
   const [mode, setMode] = useState<"login" | "register">("login");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [salesForm, setSalesForm] = useState({ name: "", email: "", password: "" });
-  const [productForm, setProductForm] = useState({ name: "", category: "Rings", price: "", imageUrl: "" });
+  const [productForm, setProductForm] = useState({ name: "", category: "Rings", giftCategory: "", price: "", imageUrl: "" });
   const [busy, setBusy] = useState(false);
 
   if (!open) return null;
@@ -752,8 +753,9 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
     event.preventDefault();
     setBusy(true);
     try {
-      await saveProduct({ name: productForm.name, category: productForm.category, price: Number(productForm.price), imageUrl: productForm.imageUrl });
-      setProductForm({ name: "", category: "Rings", price: "", imageUrl: "" });
+      const category = productForm.giftCategory || productForm.category;
+      await saveProduct({ name: productForm.name, category, price: Number(productForm.price), imageUrl: productForm.imageUrl });
+      setProductForm({ name: "", category: "Rings", giftCategory: "", price: "", imageUrl: "" });
     } catch (error) {
       alert(error instanceof Error ? error.message : "Could not save product");
     } finally {
@@ -833,8 +835,8 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
 }
 
 function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
-  form: { name: string; category: string; price: string; imageUrl: string };
-  setForm: (value: { name: string; category: string; price: string; imageUrl: string }) => void;
+  form: { name: string; category: string; giftCategory: string; price: string; imageUrl: string };
+  setForm: (value: { name: string; category: string; giftCategory: string; price: string; imageUrl: string }) => void;
   busy: boolean;
   onFile: (file?: File) => void;
   onSubmit: (event: React.FormEvent) => void;
@@ -846,6 +848,12 @@ function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
       <label>Category
         <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
           {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+        </select>
+      </label>
+      <label>Gift placement
+        <select value={form.giftCategory} onChange={(e) => setForm({ ...form, giftCategory: e.target.value })}>
+          <option value="">Regular product</option>
+          {giftCategories.map((category) => <option key={category} value={category}>{category}</option>)}
         </select>
       </label>
       <input type="number" min={1} placeholder="Price" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required />
