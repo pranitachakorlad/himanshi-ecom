@@ -931,6 +931,28 @@ function Home({ navigate }: { navigate: (page: Page, productId?: string | number
         {["Conflict-free diamonds", "Insured delivery", "Lifetime polishing", "Certified metals", "Private styling"].map((item) => <span key={item}>{item}</span>)}
       </section>
       <ProductRail title="Trending Jewellery" subtitle="Rare pieces catching the season's light" items={allProducts.slice(0, 5)} navigate={navigate} />
+      <TryOnSection navigate={navigate} />
+      <section ref={storyRef} className="story">
+        <div className="story-copy">
+          <p className="eyebrow">From raw glow to rare fire</p>
+          <h2>Every line of light reveals a promise.</h2>
+          <p>
+            Watch the gemstone move through mist, precision and brilliance, as if the jewel is being shaped by moonlight before it becomes part of a forever piece.
+          </p>
+        </div>
+        <div className="gemstone-film-wrap">
+          <video
+            className="gemstone-film"
+            src="/campaign/gemstone-story.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label="Gemstone refined by glowing light lines"
+          />
+        </div>
+      </section>
     </>
   );
 }
