@@ -806,26 +806,32 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
             {activeRole === "admin" && (
               <div className="panel-stack">
                 <div className="mini-stats"><span>Users <b>{users.length}</b></span><span>Sales <b>{users.filter((u) => u.role === "sales").length}</b></span><span>Orders <b>{orders.length}</b></span></div>
-                <form className="panel-form" onSubmit={submitSales}>
-                  <h3>Add Sales Person</h3>
-                  <input placeholder="Name" value={salesForm.name} onChange={(e) => setSalesForm({ ...salesForm, name: e.target.value })} required />
-                  <input type="email" placeholder="seller12@gmail.com" value={salesForm.email} onChange={(e) => setSalesForm({ ...salesForm, email: e.target.value })} required />
-                  <input type="password" minLength={8} placeholder="Password" value={salesForm.password} onChange={(e) => setSalesForm({ ...salesForm, password: e.target.value })} required />
-                  <button className="btn-gold" disabled={busy}>Create Sales Login</button>
-                </form>
-                <UserList users={users} />
-                <OrderList orders={orders} />
+                <div className="dashboard-section upload-section">
+                  <ProductUploadForm form={productForm} setForm={setProductForm} busy={busy} onFile={chooseProductImage} onSubmit={submitProduct} />
+                </div>
+                <div className="dashboard-section sales-section">
+                  <form className="panel-form compact-form" onSubmit={submitSales}>
+                    <h3>Add Sales Person</h3>
+                    <input placeholder="Name" value={salesForm.name} onChange={(e) => setSalesForm({ ...salesForm, name: e.target.value })} required />
+                    <input type="email" placeholder="seller12@gmail.com" value={salesForm.email} onChange={(e) => setSalesForm({ ...salesForm, email: e.target.value })} required />
+                    <input type="password" minLength={8} placeholder="Password" value={salesForm.password} onChange={(e) => setSalesForm({ ...salesForm, password: e.target.value })} required />
+                    <button className="btn-gold" disabled={busy}>Create Sales Login</button>
+                  </form>
+                </div>
+                <div className="dashboard-section"><UserList users={users} /></div>
+                <div className="dashboard-section"><ProductList products={roleProducts} onDelete={deleteProduct} /></div>
+                <div className="dashboard-section"><OrderList orders={orders} /></div>
               </div>
             )}
             {activeRole === "sales" && (
               <div className="panel-stack">
-                <ProductUploadForm form={productForm} setForm={setProductForm} busy={busy} onFile={chooseProductImage} onSubmit={submitProduct} />
-                <ProductList products={roleProducts} onDelete={deleteProduct} />
-                <OrderList orders={orders} />
+                <div className="dashboard-section upload-section">
+                  <ProductUploadForm form={productForm} setForm={setProductForm} busy={busy} onFile={chooseProductImage} onSubmit={submitProduct} />
+                </div>
+                <div className="dashboard-section"><ProductList products={roleProducts} onDelete={deleteProduct} /></div>
+                <div className="dashboard-section"><OrderList orders={orders} /></div>
               </div>
             )}
-            {activeRole === "admin" && <ProductUploadForm form={productForm} setForm={setProductForm} busy={busy} onFile={chooseProductImage} onSubmit={submitProduct} />}
-            {activeRole === "admin" && <ProductList products={roleProducts} onDelete={deleteProduct} />}
             <button className="btn-ghost full-width" onClick={logout}>Logout</button>
           </>
         )}

@@ -364,7 +364,7 @@ h3,
 
 .hero-video-frame {
   width: 100%;
-  height: clamp(30rem, 78svh, 56rem);
+  height: clamp(29rem, 76svh, 54rem);
   overflow: hidden;
   background: #05060d;
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.34);
@@ -375,6 +375,7 @@ h3,
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   opacity: 1;
 }
 
@@ -1622,19 +1623,28 @@ footer span {
 
   .hero {
     min-height: auto;
-    padding-top: 5.4rem;
+    padding-top: 5.1rem;
   }
 
   .hero-video-frame {
-    height: clamp(24rem, 68svh, 40rem);
+    height: auto;
+    aspect-ratio: 9 / 16;
+    max-height: 72svh;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(248, 216, 137, 0.08), transparent 42%),
+      #05060d;
   }
 
-  .hero-cluster {
-    height: 46vh;
+  .hero-video {
+    object-fit: contain;
   }
 
-  .hero-copy h1 {
-    font-size: clamp(3rem, 18vw, 4.7rem);
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-actions button {
+    flex: 1 1 10rem;
   }
 
   .product-grid,
@@ -1741,15 +1751,38 @@ footer span {
 .panel-form,
 .panel-stack {
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .panel-form {
-  margin: 1rem 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard-section {
+  display: grid;
+  gap: 0.9rem;
   padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1.2rem;
-  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1.15rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.035));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+}
+
+.upload-section {
+  border-color: rgba(248, 216, 137, 0.24);
+  background:
+    linear-gradient(145deg, rgba(248, 216, 137, 0.14), rgba(255, 255, 255, 0.04));
+}
+
+.sales-section {
+  border-color: rgba(217, 198, 255, 0.22);
+  background:
+    linear-gradient(145deg, rgba(217, 198, 255, 0.13), rgba(255, 255, 255, 0.035));
 }
 
 .panel-form h3,
@@ -1790,7 +1823,7 @@ footer span {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.6rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
 }
 
 .role-tabs button,
@@ -1823,7 +1856,7 @@ footer span {
 .panel-table {
   display: grid;
   gap: 0.65rem;
-  margin: 1rem 0;
+  margin: 0;
 }
 
 .panel-table p {
