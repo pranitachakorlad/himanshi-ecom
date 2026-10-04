@@ -1,17 +1,13 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#09070f"><title>Pranita</title><link rel="stylesheet" href="styles.css?v=10"></head>
-<body>
-<div class="cursor-glow" aria-hidden="true"></div>
-<div class="announcement">Pranita's magical shop collection <span>Dark theme. Sparkle hover. Wishlist ready.</span></div>
-<header><a class="logo" href="#shop">Pranita<span>STUDIO</span></a><nav aria-label="Main navigation"><a href="#shop">Shop</a><a href="#collection">Collection</a><button id="wish-button" aria-label="Open wishlist">Wishlist <span id="wish-count">0</span></button></nav><div class="header-actions"><button id="login-button" onclick="window.handleLoginClick && window.handleLoginClick()">Login</button><button id="cart-button" aria-label="Open bag">Bag <span id="cart-count">0</span></button></div></header>
-<main>
-<section class="hero" id="collection"><div class="hero-copy"><h1>Pranita</h1><p>A simple dark storefront with beautiful products, cart, wishlist, and role-based panels.</p><a class="button dark" href="#shop">Shop now <span>+</span></a></div><div class="hero-art"><img src="assets/hero-butterfly.png" onerror="this.onerror=null;this.src='https://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_1200/sample.jpg'" alt="Glowing blue butterfly on flowers"><div class="image-label">Soft glow. Beautiful finds.<span>PRANITA</span></div></div></section>
-<section class="shop-section" id="shop"><div class="section-heading"><div class="eyebrow">SHOP COLLECTION</div><div class="heading-row"><h2>Choose your favorites.</h2><span id="result-label"></span></div></div><div class="toolbar"><div class="categories" id="categories"></div><div class="search-sort"><label class="search"><span>Search</span><input id="search" type="search" placeholder="Search products" aria-label="Search products"></label><select id="sort" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="name">Name</option></select><button id="filter-button">Filters</button></div></div><div id="filters" class="filters" hidden><label>Maximum price: <strong id="price-label">Rs 12,000</strong> <input type="range" id="max-price" min="0" max="12000" step="100" value="12000"></label><button id="reset-filters">Reset filters</button></div><div class="product-grid" id="products"></div></section>
-</main>
-<footer><div class="logo">Pranita<span>STUDIO</span></div><p>Shop collection and wishlist.</p><span>2026 Pranita</span><a href="#shop">Back to top</a></footer>
-<dialog id="panel"><div class="panel-heading"><h2 id="panel-title"></h2><button class="close" aria-label="Close dialog">x</button></div><div id="panel-content"></div></dialog><div id="toast" role="status" aria-live="polite"></div><div id="quick-checkout" aria-live="polite"><div><strong>Added to bag</strong><span id="quick-item"></span></div><button class="button dark" id="quick-buy">Buy now -></button><button id="quick-close" aria-label="Close quick checkout">x</button></div>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script><script src="config.js?v=13"></script><script src="app.js?v=13"></script>
-</body></html>
-
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05060d" />
+    <title>Lunara Jewels</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
