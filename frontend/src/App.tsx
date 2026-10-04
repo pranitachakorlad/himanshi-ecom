@@ -23,7 +23,7 @@ import type { ReactNode } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 type Page = "home" | "listing" | "product" | "cart" | "wishlist" | "checkout";
-type Category = "Rings" | "Necklaces" | "Earrings" | "Bracelets" | "Bridal Jewellery" | "Gifts for Her" | "Gifts for Him";
+type Category = "New Arrivals" | "Rings" | "Necklaces" | "Earrings" | "Bridal" | "Gift Boxes";
 type Metal = "Champagne Gold" | "Platinum" | "Rose Gold" | "White Gold";
 type Role = "user" | "sales" | "admin";
 
@@ -129,7 +129,7 @@ interface ProductPayload {
   imageUrl: string;
 }
 
-const categories: Category[] = ["Rings", "Necklaces", "Earrings", "Bracelets", "Bridal Jewellery", "Gifts for Her", "Gifts for Him"];
+const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gift Boxes"];
 
 const products: Product[] = [
   {
@@ -189,7 +189,7 @@ const products: Product[] = [
   {
     id: 4,
     name: "Eclipse Tennis Bracelet",
-    category: "Bracelets",
+    category: "New Arrivals",
     metal: "Platinum",
     purity: "950",
     diamond: "3.42 ct continuous diamond line",
@@ -207,7 +207,7 @@ const products: Product[] = [
   {
     id: 5,
     name: "Seraphine Bridal Set",
-    category: "Bridal Jewellery",
+    category: "Bridal",
     metal: "Champagne Gold",
     purity: "22K",
     diamond: "Kundan-polki inspired luminous setting",
@@ -225,7 +225,7 @@ const products: Product[] = [
   {
     id: 6,
     name: "Velvet Promise Band",
-    category: "Gifts for Him",
+    category: "Gift Boxes",
     metal: "Platinum",
     purity: "950",
     diamond: "Black diamond channel detail",
@@ -243,7 +243,7 @@ const products: Product[] = [
   {
     id: 7,
     name: "Starlit Lariat Necklace",
-    category: "Gifts for Her",
+    category: "Gift Boxes",
     metal: "Champagne Gold",
     purity: "18K",
     diamond: "0.38 ct scattered star stones",
@@ -644,8 +644,8 @@ function Layout({ route, navigate, children }: { route: Route; navigate: (page: 
           <span><strong>Pranita</strong><small>JEWELS</small></span>
         </button>
         <nav className="nav-links" aria-label="Main navigation">
-          {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gifts"].map((label) => (
-            <button key={label} className="nav-link" onClick={() => navigate("listing", undefined, label === "Bridal" ? "Bridal Jewellery" : label === "New Arrivals" ? "All" : label.startsWith("Gifts") ? "Gifts for Her" : label as Category)}>
+          {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bridal", "Gift Boxes"].map((label) => (
+            <button key={label} className="nav-link" onClick={() => navigate("listing", undefined, label === "New Arrivals" ? "All" : label as Category)}>
               {label}
               <span className="mega">
                 <img src={allProducts[label === "Rings" ? 0 : label === "Necklaces" ? 1 : label === "Earrings" ? 2 : 4]?.image || products[0].image} alt="" />
@@ -931,36 +931,6 @@ function Home({ navigate }: { navigate: (page: Page, productId?: string | number
         {["Conflict-free diamonds", "Insured delivery", "Lifetime polishing", "Certified metals", "Private styling"].map((item) => <span key={item}>{item}</span>)}
       </section>
       <ProductRail title="Trending Jewellery" subtitle="Rare pieces catching the season's light" items={allProducts.slice(0, 5)} navigate={navigate} />
-      <TryOnSection navigate={navigate} />
-      <section ref={storyRef} className="story">
-        <div className="story-copy">
-          <p className="eyebrow">From raw glow to rare fire</p>
-          <h2>Every line of light reveals a promise.</h2>
-          <p>
-            Watch the gemstone move through mist, precision and brilliance, as if the jewel is being shaped by moonlight before it becomes part of a forever piece.
-          </p>
-        </div>
-        <div className="gemstone-film-wrap">
-          <video
-            className="gemstone-film"
-            src="/campaign/gemstone-story.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label="Gemstone refined by glowing light lines"
-          />
-        </div>
-      </section>
-      <PopupImageLoop />
-      <Collections navigate={navigate} />
-      <ProductRail title="New Arrivals" subtitle="Just released from the atelier" items={[...allProducts].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 4)} navigate={navigate} />
-      <ProductRail title="Best Sellers" subtitle="Chosen for proposals, milestones, and moonlit dinners" items={[...allProducts].sort((a, b) => b.popularity - a.popularity).slice(0, 4)} navigate={navigate} />
-      <Occasions navigate={navigate} />
-      <Testimonials />
-      <InstagramGallery />
-      <Newsletter />
     </>
   );
 }
