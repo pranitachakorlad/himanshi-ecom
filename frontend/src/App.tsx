@@ -129,9 +129,9 @@ interface ProductPayload {
   imageUrl: string;
 }
 
-const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"];
-const giftCategories: Category[] = ["Gift for Him", "Gift for Her"];
-const filterCategories: (Category | "All")[] = ["All", ...categories, ...giftCategories];
+const categories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes", "Gift for Him", "Gift for Her"];
+const navCategories: Category[] = ["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"];
+const filterCategories: (Category | "All")[] = ["All", ...categories];
 
 const products: Product[] = [
   {
@@ -646,7 +646,7 @@ function Layout({ route, navigate, children }: { route: Route; navigate: (page: 
           <span><strong>Pranita</strong><small>JEWELS</small></span>
         </button>
         <nav className="nav-links" aria-label="Main navigation">
-          {["New Arrivals", "Rings", "Necklaces", "Earrings", "Bracelet", "Bridal", "Gift Boxes"].map((label) => (
+          {navCategories.map((label) => (
             <button key={label} className="nav-link" onClick={() => navigate("listing", undefined, label as Category)}>
               {label}
               <span className="mega">
@@ -703,7 +703,7 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
   const [mode, setMode] = useState<"login" | "register">("login");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [salesForm, setSalesForm] = useState({ name: "", email: "", password: "" });
-  const [productForm, setProductForm] = useState({ name: "", category: "Rings", giftFor: "", price: "", imageUrl: "" });
+  const [productForm, setProductForm] = useState({ name: "", category: "Rings", price: "", imageUrl: "" });
   const [busy, setBusy] = useState(false);
 
   if (!open) return null;
@@ -752,9 +752,8 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
     event.preventDefault();
     setBusy(true);
     try {
-      const category = productForm.category === "Gift Boxes" && productForm.giftFor ? productForm.giftFor : productForm.category;
-      await saveProduct({ name: productForm.name, category, price: Number(productForm.price), imageUrl: productForm.imageUrl });
-      setProductForm({ name: "", category: "Rings", giftFor: "", price: "", imageUrl: "" });
+      await saveProduct({ name: productForm.name, category: productForm.category, price: Number(productForm.price), imageUrl: productForm.imageUrl });
+      setProductForm({ name: "", category: "Rings", price: "", imageUrl: "" });
     } catch (error) {
       alert(error instanceof Error ? error.message : "Could not save product");
     } finally {
@@ -834,8 +833,8 @@ function AccountPanel({ open, onClose }: { open: boolean; onClose: () => void })
 }
 
 function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
-  form: { name: string; category: string; giftFor: string; price: string; imageUrl: string };
-  setForm: (value: { name: string; category: string; giftFor: string; price: string; imageUrl: string }) => void;
+  form: { name: string; category: string; price: string; imageUrl: string };
+  setForm: (value: { name: string; category: string; price: string; imageUrl: string }) => void;
   busy: boolean;
   onFile: (file?: File) => void;
   onSubmit: (event: React.FormEvent) => void;
@@ -844,14 +843,11 @@ function ProductUploadForm({ form, setForm, busy, onFile, onSubmit }: {
     <form className="panel-form" onSubmit={onSubmit}>
       <h3>Add Jewellery Product</h3>
       <input placeholder="Product name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-      <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
-      {form.category === "Gift Boxes" && (
-        <select value={form.giftFor} onChange={(e) => setForm({ ...form, giftFor: e.target.value })}>
-          <option value="">Gift Boxes</option>
-          <option value="Gift for Him">Gift for Him</option>
-          <option value="Gift for Her">Gift for Her</option>
+      <label>Category
+        <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+          {categories.map((category) => <option key={category} value={category}>{category}</option>)}
         </select>
-      )}
+      </label>
       <input type="number" min={1} placeholder="Price" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required />
       <input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => onFile(e.target.files?.[0])} />
       {form.imageUrl && <img className="upload-preview" src={form.imageUrl} alt="Uploaded product" />}

@@ -1776,6 +1776,11 @@ footer span {
   color: #fffaf1;
 }
 
+.panel-form option {
+  background: #100d12;
+  color: #fffaf1;
+}
+
 .panel-form input::placeholder {
   color: rgba(255, 250, 241, 0.52);
 }
